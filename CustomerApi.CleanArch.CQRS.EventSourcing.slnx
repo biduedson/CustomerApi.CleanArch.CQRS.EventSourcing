@@ -1,0 +1,10 @@
+<Solution>
+  <Project Path="src/CustomerApi.Application/CustomerApi.Application.csproj" Id="4a68c061-7b63-4ecd-ac87-a1dae3a30378" />
+  <Project Path="src/CustomerApi.Core/CustomerApi.Core.csproj" Id="bf634b06-bad2-4588-bd81-bb48051dacf5" />
+  <Project Path="src/CustomerApi.Domain/CustomerApi.Domain.csproj" Id="08c16f4e-aa70-4d49-a9da-93aa49a15916" />
+  <Project Path="src/CustomerApi.Infrastructure/CustomerApi.Infrastructure.csproj" Id="d012ef9e-45bc-4d67-b2ec-6cce733b9817" />
+  <Project Path="src/CustomerApi.Query/CustomerApi.Query.csproj" Id="aea383a5-bf23-4ecb-8028-da0d456381a5" />
+  <Project Path="src/CustomerApi.WebApi/CustomerApi.WebApi.csproj" />
+  <Project Path="tests/CustomerApi.IntegrationTests/CustomerApi.IntegrationTests.csproj" Id="5cae7744-7a13-49fc-b0cd-fa4aff0ffc75" />
+  <Project Path="tests/CustomerApi.UnitTests/CustomerApi.UnitTests.csproj" Id="5b9825f2-fa17-4cd6-837c-24a5d31c41a3" />
+</Solution>
