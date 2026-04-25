@@ -1,7 +1,8 @@
 ﻿
 
-using Ardalis.Result;
+
 using CustomerApi.Core;
+using CustomerApi.Domain.Exceptions;
 
 namespace CustomerApi.Domain.ValueObjects;
 
@@ -10,16 +11,19 @@ public sealed record  Email
     private Email(string address) =>
         Address = address.ToLowerInvariant().Trim();
 
-    public Email() { }
+    private Email() { }
     public string Address { get; }
 
-    public static Result<Email> Create(string emailAddress)
+    public static Email Create(string emailAddress)
     {
         if (string.IsNullOrWhiteSpace(emailAddress))
-            return Result<Email>.Error("O endereço de e-mail deve ser fornecido.");
+            throw new DomainException("Email cannot be empty.");
 
-        return !RegexPatterns.EmailIsValid.IsMatch(emailAddress)
-            ? Result<Email>.Error("O endereço de e-mail é inválido.")
-            : Result<Email>.Success(new Email(emailAddress));
+        if(!RegexPatterns.EmailIsValid.IsMatch(emailAddress))
+            throw new DomainException("Email format is invalid.");
+        
+        return new Email(emailAddress);
     }
+
+    public override string ToString() => Address;
 }
