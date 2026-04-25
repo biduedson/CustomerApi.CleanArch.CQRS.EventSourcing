@@ -6,4 +6,18 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Behaviors\" />
+    <Folder Include="Customer\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Ardalis.Result" Version="10.1.0" />
+    <PackageReference Include="Ardalis.Result.FluentValidation" Version="10.1.0" />
+    <PackageReference Include="FluentValidation" Version="12.1.1" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
+    <PackageReference Include="MediatR" Version="14.1.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.7" />
+  </ItemGroup>
+
 </Project>
