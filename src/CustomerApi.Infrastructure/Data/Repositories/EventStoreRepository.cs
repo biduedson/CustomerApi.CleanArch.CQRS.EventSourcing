@@ -1,5 +1,5 @@
 ﻿using CustomerApi.Core.SharedKernel;
-using CustomerApi.Infrastructure.Data.Mappings;
+using CustomerApi.Infrastructure.Data.Context;
 
 namespace CustomerApi.Infrastructure.Data.Repositories;
 
