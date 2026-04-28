@@ -24,8 +24,4 @@
     <ProjectReference Include="..\CustomerApi.Domain\CustomerApi.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Data\Services\" />
-  </ItemGroup>
-
 </Project>
