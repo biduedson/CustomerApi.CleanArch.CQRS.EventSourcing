@@ -15,7 +15,7 @@ public abstract class BaseEntity : IEntity<Guid>
     public void AddDomainEvents(BaseEvent domainEvent) =>
         _doamainEvents.Add(domainEvent);
 
-    public  void ClearEvets() =>
+    public  void ClearDomainEvents() =>
         _doamainEvents.Clear();
 }
 
