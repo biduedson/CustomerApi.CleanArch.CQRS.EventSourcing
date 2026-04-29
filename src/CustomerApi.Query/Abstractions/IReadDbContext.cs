@@ -6,7 +6,7 @@ public  interface IReadDbContext : IDisposable
 {
     string ConnectionString { get; }
 
-    IMongoCollection<TQueryModel> GEtCollection<TQueryModel>() where TQueryModel : IQueryModel;
+    IMongoCollection<TQueryModel> GetCollection<TQueryModel>() where TQueryModel : IQueryModel;
 
     Task CreateCollectionsAsync();
 }

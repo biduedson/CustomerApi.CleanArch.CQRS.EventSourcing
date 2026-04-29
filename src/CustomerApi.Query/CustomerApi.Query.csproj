@@ -20,10 +20,13 @@
 
   <ItemGroup>
     <Folder Include="Application\" />
-    <Folder Include="Data\" />
     <Folder Include="EventHandlers\" />
-    <Folder Include="QueriesModel\" />
     <Folder Include="Profiles\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CustomerApi.Core\CustomerApi.Core.csproj" />
+    <ProjectReference Include="..\CustomerApi.Domain\CustomerApi.Domain.csproj" />
   </ItemGroup>
 
 </Project>
