@@ -21,7 +21,6 @@
   <ItemGroup>
     <Folder Include="Application\" />
     <Folder Include="EventHandlers\" />
-    <Folder Include="Profiles\" />
   </ItemGroup>
 
   <ItemGroup>
