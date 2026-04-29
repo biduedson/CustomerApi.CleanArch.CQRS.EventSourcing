@@ -3,7 +3,7 @@ using CustomerApi.Query.QueriesModel;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 
-namespace CustomerApi.Query.Data.Context.Mappings;
+namespace CustomerApi.Query.Data.Mappings;
 
 public class CustomerMap : IReadDbMapping
 {

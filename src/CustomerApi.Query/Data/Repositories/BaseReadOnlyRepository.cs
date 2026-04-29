@@ -1,7 +1,7 @@
 ﻿using CustomerApi.Query.Abstractions;
 using MongoDB.Driver;
 
-namespace CustomerApi.Query.Data.Context.Repositories;
+namespace CustomerApi.Query.Data.Repositories;
 
 internal abstract class BaseReadOnlyRepository<TQueryModel, TKey>(IReadDbContext context) : IReadOnlyRepository<TQueryModel, TKey>
     where TQueryModel : IQueryModel<TKey>

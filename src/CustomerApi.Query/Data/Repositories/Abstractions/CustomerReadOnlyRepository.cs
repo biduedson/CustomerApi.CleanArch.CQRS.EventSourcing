@@ -1,8 +1,9 @@
 ﻿using CustomerApi.Query.Abstractions;
+using CustomerApi.Query.Data.Repositories;
 using CustomerApi.Query.QueriesModel;
 using MongoDB.Driver;
 
-namespace CustomerApi.Query.Data.Context.Repositories.Abstractions;
+namespace CustomerApi.Query.Data.Repositories.Abstractions;
 
 internal class CustomerReadOnlyRepository(IReadDbContext readDbContext)
      : BaseReadOnlyRepository<CustomerQueryModel, Guid>(readDbContext), ICustomerReadOnlyRepository
