@@ -18,4 +18,12 @@
     <PackageReference Include="Polly" Version="8.6.6" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Application\" />
+    <Folder Include="Data\" />
+    <Folder Include="EventHandlers\" />
+    <Folder Include="QueriesModel\" />
+    <Folder Include="Profiles\" />
+  </ItemGroup>
+
 </Project>
