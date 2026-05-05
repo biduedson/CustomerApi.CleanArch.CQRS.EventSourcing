@@ -42,7 +42,7 @@ internal class CustomerConfiguration : IEntityTypeConfiguration<Customer>
         });
 
         builder
-            .Property(customer => customer.Gender)
+            .Property(customer => customer.DateOfBirth)
             .IsRequired()
             .HasColumnType("DATE");
     }

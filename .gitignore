@@ -3,6 +3,11 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+.DS_Store
+*/.DS_Store
+.run/
+data-mssql/
+data-mongo/
 # User-specific files
 *.rsuser
 *.suo

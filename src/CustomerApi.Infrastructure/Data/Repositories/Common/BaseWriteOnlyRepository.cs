@@ -34,6 +34,7 @@ internal abstract class BaseWriteOnlyRepository<TEntity, TKey>(WriteDbContext db
     #region IDisposable
     private bool _disposed;
 
+    ~BaseWriteOnlyRepository() => Dispose(false);
     public void Dispose()
     {
         Dispose(true);
