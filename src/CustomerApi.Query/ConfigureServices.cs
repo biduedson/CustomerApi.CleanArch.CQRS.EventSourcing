@@ -18,12 +18,12 @@ public static  class ConfigureServices
 
     public static IServiceCollection AddQueryHandlers(this IServiceCollection services)
     {
-        var assembly = Assembly.GetAssembly(typeof(IQueryMarker));
+        var assembly = typeof(IQueryMarker).Assembly;
 
         return services
-           .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assembly))
-           .AddAutoMapper(assembly)                   
-           .AddValidatorsFromAssembly(assembly);
+            .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assembly))
+            .AddAutoMapper(cfg => { }, assembly)
+            .AddValidatorsFromAssembly(assembly);
     }
 
     public static IServiceCollection AddReadDbContext(this IServiceCollection services)

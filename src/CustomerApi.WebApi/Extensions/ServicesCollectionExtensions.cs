@@ -12,7 +12,7 @@ internal static class ServicesCollectionExtensions
 {
     private const int DbMaxRetryCount = 3;
     private const int DbCommandTimeout = 30;
-    private const string DbMigrationAssemblyName = "Customer.WebApi";
+    private const string DbMigrationAssemblyName = "CustomerApi.WebApi";
     private const string RedisInstanceName = "master";
     private const string TestingEnvironmentName = "Testing";
 
