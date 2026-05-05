@@ -61,6 +61,7 @@ builder.Services
     .AddCommandHandlers()
     .AddQueryHandlers()
     .AddWriteDbContext(builder.Environment)
+    .AddMongoDbConfiguration()
     .AddWriteOnlyRepositories()
     .AddReadDbContext()
     .AddReadOnlyRepositories()

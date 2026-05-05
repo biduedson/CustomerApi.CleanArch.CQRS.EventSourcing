@@ -68,8 +68,4 @@
     <ProjectReference Include="..\CustomerApi.Query\CustomerApi.Query.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\v1\" />
-  </ItemGroup>
-
 </Project>
