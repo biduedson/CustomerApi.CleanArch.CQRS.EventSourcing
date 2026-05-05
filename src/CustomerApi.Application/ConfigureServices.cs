@@ -8,10 +8,10 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace CustomerApi.Application;
 
-public class ConfigureServices
+public static class ConfigureServices
 {
     [ExcludeFromCodeCoverage]
-    public  static IServiceCollection AddCommandHandlers(IServiceCollection services)
+    public  static IServiceCollection AddCommandHandlers(this IServiceCollection services)
     {
         var assembly = Assembly.GetAssembly(typeof(IApplicationMarker));
         return services

@@ -1,0 +1,114 @@
+﻿using CustomerApi.Core.AppSettings;
+using CustomerApi.Core.Extensions;
+using CustomerApi.Infrastructure;
+using CustomerApi.Infrastructure.Data.Context;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using MongoDB.Driver;
+
+namespace CustomerApi.WebApi.Extensions;
+
+internal static class ServicesCollectionExtensions
+{
+    private const int DbMaxRetryCount = 3;
+    private const int DbCommandTimeout = 30;
+    private const string DbMigrationAssemblyName = "CustomerApi.WebApi";
+    private const string RedisInstanceName = "master";
+    private const string TestingEnvironmentName = "Testing";
+
+    private static readonly string[] DbRelationalTags = ["database", "ef-core", "sql-server", "relational"];
+    private static readonly string[] DbNoSqlTags = ["database", "mongodb", "no-sql"];
+
+    public static IServiceCollection AddHealtChecks(this IServiceCollection services, IConfiguration configuration)
+    {
+        var options = configuration.GEtOptions<ConnectionOptions>();
+
+        var healthCheckBuilder = services
+            .AddHealthChecks()
+            .AddDbContextCheck<WriteDbContext>(tags: DbRelationalTags)
+            .AddDbContextCheck<EventStoreDbContext>(tags: DbRelationalTags)
+            .AddMongoDb(clientFactory: _ => new MongoClient(options.NoSqlConnection), tags: DbNoSqlTags);
+
+        if (!options.CacheConnectionInMemory())
+            healthCheckBuilder.AddRedis(options.CacheConnection);
+
+        return services;
+    }
+
+    public static IServiceCollection AddWriteDbContext(this IServiceCollection services, IWebHostEnvironment environment)
+    {
+        if (!environment.IsEnvironment(TestingEnvironmentName))
+        {
+            services.AddDbContextPool<WriteDbContext>((serviceProvider, optionsBuilder) =>
+                ConfigureDbContext<WriteDbContext>(
+                    serviceProvider, optionsBuilder, QueryTrackingBehavior.TrackAll
+                    ));
+
+            services.AddDbContextPool<EventStoreDbContext>((serviceProvider, optionsBuilder) =>
+                ConfigureDbContext<EventStoreDbContext>(
+                    serviceProvider, optionsBuilder, QueryTrackingBehavior.NoTrackingWithIdentityResolution));
+        }
+
+        return services;
+    }
+
+    public static IServiceCollection AddCacheService(this IServiceCollection services, IConfiguration configuration)
+    {
+        var options = configuration.GEtOptions<ConnectionOptions>();
+
+        if (options.CacheConnectionInMemory())
+        {
+            services.AddMemoryCacheService();
+            services.AddMemoryCache(memoryOptions => memoryOptions.TrackStatistics = true);
+        }
+        else
+        {
+            services.AddDistributedCacheService();
+            services.AddStackExchangeRedisCache(redisOptions =>
+            {
+                redisOptions.InstanceName = RedisInstanceName;
+                redisOptions.Configuration = options.CacheConnection;
+            });
+        }
+
+        return services;
+    }
+    private static void ConfigureDbContext<TDbContext>(
+        IServiceProvider serviceProvider,
+        DbContextOptionsBuilder optionsBuilder,
+          QueryTrackingBehavior queryTrackingBehavior) where TDbContext : DbContext
+    {
+        var logger = serviceProvider.GetRequiredService<ILogger<TDbContext>>();
+        var options = serviceProvider.GetOptions<ConnectionOptions>();
+        var environment = serviceProvider.GetRequiredService<IHostEnvironment>();
+        var envIsDevelopment = environment.IsDevelopment();
+
+        optionsBuilder
+            .UseSqlServer(options.SqlConnection, sqlServerOptions =>
+            {
+                sqlServerOptions
+                    .MigrationsAssembly(DbMigrationAssemblyName)
+                    .EnableRetryOnFailure(DbMaxRetryCount)
+                    .CommandTimeout(DbCommandTimeout);
+            })
+            .EnableDetailedErrors(envIsDevelopment)
+            .EnableSensitiveDataLogging(envIsDevelopment)
+            .UseQueryTrackingBehavior(queryTrackingBehavior)
+            .LogTo((eventId, _) => eventId.Id == CoreEventId.ExecutionStrategyRetrying, eventData =>
+            {
+                if (eventData is not ExecutionStrategyEventData retryEventData)
+                    return;
+
+                var exceptions = retryEventData.ExceptionsEncountered;
+
+                logger.LogWarning(
+                    "----- DbContext: Tentativa #{Count} com atraso de {Delay} devido ao erro: {Message}",
+                    exceptions.Count,
+                    retryEventData.Delay,
+                    exceptions[^1].Message);
+            });
+
+        if (envIsDevelopment)
+            optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information);
+    }
+}
